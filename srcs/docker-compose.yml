@@ -1,0 +1,72 @@
+secrets:
+  db_password:
+    file: ../secrets/db_password.txt
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  credentials:
+    file: ../secrets/credentials.txt
+
+networks:
+  inception:
+    driver: bridge
+
+volumes:
+  wordpress_db:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/tsaby/data/mariadb
+  wordpress_files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/tsaby/data/wordpress
+
+services:
+
+  mariadb:
+    image: mariadb
+    build: requirements/mariadb
+    container_name: mariadb
+    restart: unless-stopped
+    env_file: .env
+    secrets:
+      - db_password
+      - db_root_password
+    volumes:
+      - wordpress_db:/var/lib/mysql
+    networks:
+      - inception
+
+  wordpress:
+    image: wordpress
+    build: requirements/wordpress
+    container_name: wordpress
+    restart: unless-stopped
+    env_file: .env
+    secrets:
+      - db_password
+      - credentials
+    volumes:
+      - wordpress_files:/var/www/wordpress
+    networks:
+      - inception
+    depends_on:
+      - mariadb
+
+  nginx:
+    image: nginx
+    build: requirements/nginx
+    container_name: nginx
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress_files:/var/www/wordpress
+    networks:
+      - inception
+    depends_on:
+      - wordpress
