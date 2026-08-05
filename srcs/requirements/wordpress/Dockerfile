@@ -11,14 +11,13 @@ RUN apt-get update && apt-get install -y \
     php-intl \
     php-bcmath \
     curl \
+    mariadb-client \
     && rm -rf /var/lib/apt/lists/*
 
-# Installer WP-CLI
 RUN curl -sO https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x wp-cli.phar \
     && mv wp-cli.phar /usr/local/bin/wp
 
-# Préparer le répertoire WordPress et le socket php-fpm
 RUN mkdir -p /run/php /var/www/wordpress \
     && chown -R www-data:www-data /var/www/wordpress
 
