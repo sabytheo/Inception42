@@ -24,7 +24,7 @@ DELETE FROM mysql.user WHERE User='';
 DROP DATABASE IF EXISTS test;
 FLUSH PRIVILEGES;
 EOF
-    kill $MYSQL_PID
+    mariadb-admin -u root -p"${DB_ROOT_PASSWORD}" shutdown
     wait $MYSQL_PID
 fi
 

@@ -40,8 +40,7 @@ if [ ! -f wp-config.php ]; then
         --role=author \
         --user_pass="${WP_USER_PASSWORD}" \
         --allow-root
-
-    chown -R www-data:www-data /var/www/wordpress
 fi
 
+chown -R www-data:www-data /var/www/wordpress
 exec php-fpm8.2 -F

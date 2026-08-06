@@ -29,7 +29,7 @@ volumes:
 services:
 
   mariadb:
-    image: inception-mariadb
+    image: mariadb
     build: requirements/mariadb
     container_name: mariadb
     restart: unless-stopped
@@ -43,7 +43,7 @@ services:
       - inception
 
   wordpress:
-    image: inception-wordpress
+    image: wordpress
     build: requirements/wordpress
     container_name: wordpress
     restart: unless-stopped
@@ -60,7 +60,7 @@ services:
       - mariadb
 
   nginx:
-    image: inception-nginx
+    image: nginx
     build: requirements/nginx
     container_name: nginx
     restart: unless-stopped
