@@ -10,7 +10,7 @@ chown -R mysql:mysql  /run/mysqld
 if [ ! -d "/var/lib/mysql/${MYSQL_DATABASE}" ]; then
 
     mariadb-install-db --user=mysql --datadir=/var/lib/mysql > /dev/null
-    mysqld --user=mysql &
+    mysqld --user=mysql --skip-networking &
     MYSQL_PID=$!
     until mariadb-admin ping --silent 2>/dev/null; do
         sleep 1
